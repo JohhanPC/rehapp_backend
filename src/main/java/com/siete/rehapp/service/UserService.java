@@ -1,5 +1,6 @@
 package com.siete.rehapp.service;
 
+import com.siete.rehapp.dto.UpdatePasswordDTO;
 import com.siete.rehapp.dto.UserDTO;
 import com.siete.rehapp.dto.UserRegisterDTO;
 import com.siete.rehapp.entity.UserEntity;
@@ -84,6 +85,25 @@ public class UserService {
         }catch (Exception e){
             log.error("Error during login: ", e);
             throw new UserException("Error during login: " + e.getMessage());
+        }
+    }
+
+    public String updatePassword(UpdatePasswordDTO updatePasswordDTO){
+        try{
+            log.info("Updating password for email: " + updatePasswordDTO.getEmail());
+            UserEntity userEntity = userRepository.findByEmail(updatePasswordDTO.getEmail())
+                    .orElseThrow(() -> new UserException("User not found"));
+
+            String encodedPassword = Base64Util.encode(updatePasswordDTO.getNewPassword());
+            userEntity.setPassword(encodedPassword);
+
+            userRepository.save(userEntity);
+
+            log.info("Password updated successfully for email: " + updatePasswordDTO.getEmail());
+            return "User update successfully";
+        }catch (Exception e){
+            log.error("Error updating password: ", e);
+            throw new UserException("Error updating password: " + e.getMessage());
         }
     }
 

@@ -1,5 +1,6 @@
 package com.siete.rehapp.controller;
 
+import com.siete.rehapp.dto.UpdatePasswordDTO;
 import com.siete.rehapp.dto.UserDTO;
 import com.siete.rehapp.dto.UserRegisterDTO;
 import com.siete.rehapp.service.UserService;
@@ -51,5 +52,11 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @PutMapping("/updatePassword")
+    public  ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordDTO updatePasswordDTO){
+        log.info("Updating password for email: {}", updatePasswordDTO.getEmail());
+        String response = userService.updatePassword(updatePasswordDTO);
+        return ResponseEntity.ok(response);
+    }
 
 }
