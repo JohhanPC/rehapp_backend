@@ -1,8 +1,8 @@
 package com.siete.rehapp.controller;
 
+import com.siete.rehapp.dto.PatientUserRegisterDTO;
 import com.siete.rehapp.dto.UpdatePasswordDTO;
 import com.siete.rehapp.dto.UserDTO;
-import com.siete.rehapp.dto.UserRegisterDTO;
 import com.siete.rehapp.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/save")
-    public ResponseEntity<UserRegisterDTO> createUser(@RequestBody UserRegisterDTO userRegister) {
+    public ResponseEntity<PatientUserRegisterDTO> createUser(@RequestBody PatientUserRegisterDTO userRegister) {
         log.info("Creating user: {}", userRegister);
-        UserRegisterDTO createdUser = userService.save(userRegister);
+        PatientUserRegisterDTO createdUser = userService.save(userRegister);
         log.info("Created user: {}", createdUser);
         return ResponseEntity.ok(createdUser);
     }

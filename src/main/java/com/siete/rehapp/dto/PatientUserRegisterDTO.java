@@ -4,7 +4,7 @@ import com.siete.rehapp.enums.UserType;
 import lombok.Data;
 
 @Data
-public class UserRegisterDTO {
+public class PatientUserRegisterDTO {
 
     private String email;
     private String userName;

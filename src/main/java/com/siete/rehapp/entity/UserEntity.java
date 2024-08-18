@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email"),
+        @UniqueConstraint(columnNames = "identification_number")
+})
 @Entity
 public class UserEntity {
 
@@ -18,6 +21,9 @@ public class UserEntity {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "identification_number")
+    private String identificationNumber;
 
     @Column(name = "age")
     private int age;

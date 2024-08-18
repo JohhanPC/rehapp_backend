@@ -1,8 +1,8 @@
 package com.siete.rehapp.service;
 
+import com.siete.rehapp.dto.PatientUserRegisterDTO;
 import com.siete.rehapp.dto.UpdatePasswordDTO;
 import com.siete.rehapp.dto.UserDTO;
-import com.siete.rehapp.dto.UserRegisterDTO;
 import com.siete.rehapp.entity.UserEntity;
 import com.siete.rehapp.exception.UserException;
 import com.siete.rehapp.mapper.UserMapper;
@@ -21,14 +21,14 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
-    public UserRegisterDTO save(UserRegisterDTO userRegisterDto) {
+    public PatientUserRegisterDTO save(PatientUserRegisterDTO patientUserRegisterDto) {
         try {
 
-            String encodedPassword = Base64Util.encode(userRegisterDto.getPassword());
-            userRegisterDto.setPassword(encodedPassword);
+            String encodedPassword = Base64Util.encode(patientUserRegisterDto.getPassword());
+            patientUserRegisterDto.setPassword(encodedPassword);
 
             return userMapper.toUserRegisterDTO(
-                    userRepository.save(userMapper.toUserEntityRegister(userRegisterDto))
+                    userRepository.save(userMapper.toUserEntityRegister(patientUserRegisterDto))
             );
         } catch (Exception e) {
             log.error("Error saving user: ", e);

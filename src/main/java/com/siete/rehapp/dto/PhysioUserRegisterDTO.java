@@ -4,17 +4,14 @@ import com.siete.rehapp.enums.UserType;
 import lombok.Data;
 
 @Data
-public class UserDTO {
+public class PhysioUserRegisterDTO {
 
-    private Long userId;
+    private String email;
     private String userName;
     private String password;
-    private String identificationNumber;
-    private int age;
-    private String sex;
-    private String email;
-    private String phoneNumber;
-    private String city;
     private UserType userType;
+    private String identificationNumber;
+    private String professionalCardNumber;
+    private String phoneNumber;
 
 }
