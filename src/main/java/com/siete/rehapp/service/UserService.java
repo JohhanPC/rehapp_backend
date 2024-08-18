@@ -55,7 +55,7 @@ public class UserService {
                     .orElseThrow(() -> new UserException("User not found"));
             log.info("Found existing user: {}", existingUserEntity);
 
-            userDTO.setPassword(Base64Util.encode(userDTO.getPassword()));
+            //userDTO.setPassword(Base64Util.encode(userDTO.getPassword()));
             log.info("Modify user: {}", userDTO);
 
             userMapper.updateUserFromDto(userDTO, existingUserEntity);
