@@ -4,6 +4,7 @@ import com.siete.rehapp.dto.PatientUserRegisterDTO;
 import com.siete.rehapp.dto.UpdatePasswordDTO;
 import com.siete.rehapp.dto.UserDTO;
 import com.siete.rehapp.entity.UserEntity;
+import com.siete.rehapp.enums.UserType;
 import com.siete.rehapp.exception.UserException;
 import com.siete.rehapp.mapper.UserMapper;
 import com.siete.rehapp.repository.UserRepository;
@@ -104,6 +105,24 @@ public class UserService {
         }catch (Exception e){
             log.error("Error updating password: ", e);
             throw new UserException("Error updating password: " + e.getMessage());
+        }
+    }
+
+    public UserDTO findPatientByIdentificationNumber(String identificationNumber) {
+        try {
+            log.info("Searching for patient with identification number: {}", identificationNumber);
+            UserEntity userEntity = userRepository.findByIdentificationNumberAndUserType(identificationNumber, UserType.PATIENT)
+                    .orElseThrow(() -> new UserException("Patient not found with identification number: " + identificationNumber));
+
+            log.info("Patient found: {}", userEntity);
+            return userMapper.toUserDTO(userEntity);
+
+        } catch (UserException e) {
+            log.error("Patient not found: {}", e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            log.error("Error searching for patient with identification number: {}", identificationNumber, e);
+            throw new UserException("An unexpected error occurred while searching for the patient");
         }
     }
 

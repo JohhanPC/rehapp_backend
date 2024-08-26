@@ -4,6 +4,8 @@ import com.siete.rehapp.enums.UserType;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Set;
+
 @Data
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email"),
@@ -43,5 +45,8 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type")
     private UserType userType;
+
+    @ManyToMany(mappedBy = "patients")
+    private Set<PhysiotherapistEntity> physiotherapists;
 
 }

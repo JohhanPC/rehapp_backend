@@ -10,6 +10,7 @@ import com.siete.rehapp.repository.UserRepository;
 import com.siete.rehapp.utils.Base64Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -45,6 +46,16 @@ public class PhysiotherapistService {
             log.error("Error registering physiotherapist: ", e);
             throw new UserException("Error registering physiotherapist: " + e.getMessage());
         }
+    }
+
+    public void assignPatient(Long physiotherapistId, Long patientId) {
+        PhysiotherapistEntity physiotherapist = physiotherapistRepository.findById(physiotherapistId)
+                .orElseThrow(() -> new ResourceNotFoundException("Physiotherapist not found"));
+        UserEntity patient = userRepository.findById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient not found"));
+
+        physiotherapist.getPatients().add(patient);
+        physiotherapistRepository.save(physiotherapist);
     }
 
 }

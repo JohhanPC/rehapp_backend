@@ -1,5 +1,6 @@
 package com.siete.rehapp.controller;
 
+import com.siete.rehapp.dto.AssignPatientDTO;
 import com.siete.rehapp.dto.PhysioUserRegisterDTO;
 import com.siete.rehapp.service.PhysiotherapistService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,5 +25,11 @@ public class PhysiotherapistController {
         PhysioUserRegisterDTO registeredPhysio = physiotherapistService.registerPhysiotherapist(physioUserRegisterDTO);
         log.info("Physiotherapist registered successfully: {}", registeredPhysio);
         return ResponseEntity.ok(registeredPhysio);
+    }
+
+    @PostMapping("/assign-patient")
+    public ResponseEntity<String> assignPatientToPhysiotherapist(@RequestBody AssignPatientDTO assignPatientDTO) {
+        physiotherapistService.assignPatient(assignPatientDTO.getPhysiotherapistId(), assignPatientDTO.getPatientId());
+        return ResponseEntity.ok("Patient assigned to physiotherapist successfully");
     }
 }

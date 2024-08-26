@@ -59,4 +59,12 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/find-patient")
+    public ResponseEntity<UserDTO> findPatientByIdentificationNumber(@RequestParam String identificationNumber) {
+        log.info("Searching for patient with identification number: {}", identificationNumber);
+        UserDTO patient = userService.findPatientByIdentificationNumber(identificationNumber);
+        log.info("Patient found: {}", patient);
+        return ResponseEntity.ok(patient);
+    }
+
 }
