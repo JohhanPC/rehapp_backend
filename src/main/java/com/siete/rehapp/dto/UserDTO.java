@@ -1,5 +1,6 @@
 package com.siete.rehapp.dto;
 
+import com.siete.rehapp.entity.PhysiotherapistEntity;
 import com.siete.rehapp.enums.UserType;
 import lombok.Data;
 
@@ -16,5 +17,6 @@ public class UserDTO {
     private String phoneNumber;
     private String city;
     private UserType userType;
+    private String professionalCardNumber;
 
 }

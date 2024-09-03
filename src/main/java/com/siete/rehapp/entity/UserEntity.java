@@ -46,7 +46,7 @@ public class UserEntity {
     @Column(name = "user_type")
     private UserType userType;
 
-    @ManyToMany(mappedBy = "patients")
+    @ManyToMany(mappedBy = "patients", fetch = FetchType.EAGER)
     private Set<PhysiotherapistEntity> physiotherapists;
 
 }

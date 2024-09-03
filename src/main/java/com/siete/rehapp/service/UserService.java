@@ -3,6 +3,7 @@ package com.siete.rehapp.service;
 import com.siete.rehapp.dto.PatientUserRegisterDTO;
 import com.siete.rehapp.dto.UpdatePasswordDTO;
 import com.siete.rehapp.dto.UserDTO;
+import com.siete.rehapp.entity.PhysiotherapistEntity;
 import com.siete.rehapp.entity.UserEntity;
 import com.siete.rehapp.enums.UserType;
 import com.siete.rehapp.exception.UserException;
@@ -70,20 +71,29 @@ public class UserService {
         }
     }
 
-    public UserDTO login(String email, String password){
-        try{
+    public UserDTO login(String email, String password) {
+        try {
             log.info("Start login");
             UserEntity userEntity = userRepository.findByEmail(email)
-                    .orElseThrow(()-> new UserException("Invalid email or password"));
+                    .orElseThrow(() -> new UserException("Invalid email or password"));
             log.info("User found: {}", userEntity);
-            String encodedPassword = Base64Util.encode(password);
 
-            if (!userEntity.getPassword().equals(encodedPassword)){
-                throw  new UserException("Invalid email or password");
+            String encodedPassword = Base64Util.encode(password);
+            if (!userEntity.getPassword().equals(encodedPassword)) {
+                throw new UserException("Invalid email or password");
             }
 
-            return userMapper.toUserDTO(userEntity);
-        }catch (Exception e){
+            UserDTO userDTO = userMapper.toUserDTO(userEntity);
+
+            // Si el usuario es fisioterapeuta, obten la tarjeta profesional
+            if (userEntity.getUserType() == UserType.PHYSIOTHERAPIST) {
+                PhysiotherapistEntity physiotherapistEntity = userRepository.findPhysiotherapistByUserId(userEntity.getUserId())
+                        .orElseThrow(() -> new UserException("Fisioterapeuta no encontrado para este usuario"));
+                userDTO.setProfessionalCardNumber(physiotherapistEntity.getProfessionalCardNumber());
+            }
+
+            return userDTO;
+        } catch (Exception e) {
             log.error("Error during login: ", e);
             throw new UserException("Error during login: " + e.getMessage());
         }

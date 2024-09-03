@@ -4,14 +4,15 @@ import com.siete.rehapp.dto.PhysioUserRegisterDTO;
 import com.siete.rehapp.dto.UserDTO;
 import com.siete.rehapp.entity.PhysiotherapistEntity;
 import com.siete.rehapp.entity.UserEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
+import com.siete.rehapp.enums.UserType;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
+    @Mappings({
+            @Mapping(target = "professionalCardNumber", source = "userEntity", qualifiedByName = "mapProfessionalCardNumber")
+    })
     UserDTO toUserDTO(UserEntity userEntity);
 
     @Mappings({
@@ -40,4 +41,14 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     PhysiotherapistEntity toPhysiotherapistEntity(PhysioUserRegisterDTO physioUserRegisterDTO);
+
+    @Named("mapProfessionalCardNumber")
+    default String mapProfessionalCardNumber(UserEntity userEntity) {
+        if (userEntity.getUserType() == UserType.PHYSIOTHERAPIST && userEntity.getPhysiotherapists() != null) {
+            for (PhysiotherapistEntity physiotherapist : userEntity.getPhysiotherapists()) {
+                return physiotherapist.getProfessionalCardNumber();
+            }
+        }
+        return null;
+    }
 }
